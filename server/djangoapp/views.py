@@ -24,7 +24,15 @@ def contact(request):
     return render(request, 'djangoapp/contact.html')
 
 def login_request(request):
-    pass
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['psw']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('djangoapp:index')
+        else:
+            return redirect(to=reverse('admin:index'))
 
 def logout_request(request):
     logout(request)
