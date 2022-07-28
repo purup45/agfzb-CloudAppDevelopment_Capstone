@@ -30,9 +30,9 @@ def login_request(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('djangoapp:index')
-        else:
             return redirect(to=reverse('admin:index'))
+        else:
+            return redirect('djangoapp:index')
 
 def logout_request(request):
     logout(request)
