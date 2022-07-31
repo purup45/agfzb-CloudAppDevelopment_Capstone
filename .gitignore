@@ -139,4 +139,3 @@ server/djangoapp/migrations/
 .DS_Store
 *.pyc
 server/djangoapp/migrations/
-
