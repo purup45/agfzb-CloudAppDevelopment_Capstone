@@ -42,7 +42,6 @@ def logout_request(request):
 def registration_request(request):
     return render(request, 'djangoapp/registration.html')
 
-# Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
     if request.method == "GET":
         context = {}
@@ -52,10 +51,8 @@ def get_dealerships(request):
         context["dealership_list"]=dealerships
         return render(request, 'djangoapp/index.html', context)
 
-
-# Create a `get_dealer_details` view to render the reviews of a dealer
-# def get_dealer_details(request, dealer_id):
-# ...
+def get_dealer_details(request, dealer_id):
+    pass
 
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
