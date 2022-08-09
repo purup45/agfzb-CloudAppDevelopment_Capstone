@@ -2,19 +2,25 @@ import requests
 import json
 from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
+from ibm_watson import NaturalLanguageUnderstandingV1
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from ibm_watson.natural_language_understanding_v1 import Features, SentimentOptions
+
 
 def get_request(url, **kwargs):
     print(kwargs)
     try:
         if "apikey" in kwargs:
-            response = requests.get(url, headers={'Content-Type':'application/json'}, params=kwargs, auth=HTTPBasicAuth("apikey", kwargs["apikey"]))
+            response = requests.get(url, headers={
+                                    'Content-Type': 'application/json'}, params=kwargs, auth=HTTPBasicAuth("apikey", kwargs["apikey"]))
         else:
-            response = requests.get(url, headers={'Content-Type':'application/json'}, params=kwargs)
+            response = requests.get(
+                url, headers={'Content-Type': 'application/json'}, params=kwargs)
         status_code = response.status_code
         print("With status {} ".format(status_code))
         json_data = json.loads(response.text)
     except Exception as e:
-        print("Error " ,e)
+        print("Error ", e)
     status_code = response.status_code
     print("With status {} ".format(status_code))
     json_data = json.loads(response.text)
@@ -50,33 +56,31 @@ def get_dealer_reviews_from_cf(url, dealer_id):
     if json_result:
         reviews = json_result["body"]
         for review in reviews:
-            review_doc = review["doc"]
-            if "purchase_date" in review_doc:
-                review_obj = DealerReview(
-                    dealership=review_doc["dealership"],
-                    name=review_doc["name"],
-                    purchase=review_doc["purchase"],
-                    review=review_doc["review"],
-                    purchase_date=review_doc["purchase_date"],
-                    car_make=review_doc["car_make"],
-                    car_model=review_doc["car_model"],
-                    car_year=review_doc["car_year"],
-                    sentiment=analyze_review_sentiments(review_doc["review"]),
-                    id=review_doc['id']
-                    )
-                results.append(review_obj)
+            review_obj = DealerReview(
+                dealership=review["dealership"],
+                name=review["name"],
+                purchase=review["purchase"],
+                review=review["review"],
+                purchase_date=review["purchase_date"],
+                car_make=review["car_make"],
+                car_model=review["car_model"],
+                car_year=review["car_year"],
+                sentiment=analyze_review_sentiments(review["review"]),
+                id=review['id']
+            )
+            results.append(review_obj)
     return results
 
 
-def analyze_review_sentiments(text):
-    API_KEY="56Uu0KyzSNEZ8u71Q9Nu4eqYmSiLxsMV0otoCXFUCIam"
-    NLU_URL='https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/351966a8-a214-4fc1-a319-ea7f066c002c'
-    params = json.dumps({"text": text, "features": {"sentiment": {}}})
-    response = requests.post(NLU_URL,data=params,headers={'Content-Type':'application/json'},auth=HTTPBasicAuth("apikey", API_KEY))
-    try:
-        sentiment=response.json()['sentiment']['document']['label']
-        return sentiment
-    except:
-        return "neutral"
-
-
+def analyze_review_sentiments(dealer_review):
+    API_KEY = "56Uu0KyzSNEZ8u71Q9Nu4eqYmSiLxsMV0otoCXFUCIam"
+    NLU_URL = 'https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/351966a8-a214-4fc1-a319-ea7f066c002c'
+    authenticator = IAMAuthenticator(API_KEY)
+    natural_language_understanding = NaturalLanguageUnderstandingV1(
+        version='2021-08-01', authenticator=authenticator)
+    natural_language_understanding.set_service_url(NLU_URL)
+    response = natural_language_understanding.analyze(text=dealer_review+"hello hello hello", features=Features(
+        sentiment=SentimentOptions(targets=[dealer_review+"hello hello hello"]))).get_result()
+    label = json.dumps(response, indent=2)
+    label = response['sentiment']['document']['label']
+    return(label)

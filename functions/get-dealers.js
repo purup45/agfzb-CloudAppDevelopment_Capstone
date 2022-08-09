@@ -56,7 +56,7 @@ function main(params) {
     } else {
       // return all documents
       cloudant
-        .postAllDocs({ db: "dealerships", includeDocs: true, limit: 10 })
+        .postAllDocs({ db: "dealerships", includeDocs: true })
         .then((result) => {
           let code = 200;
           if (result.result.rows.length == 0) {
@@ -75,5 +75,6 @@ function main(params) {
   });
 }
 
+// example invocation
 let result = main({});
 result.then((dealers) => console.log(dealers));

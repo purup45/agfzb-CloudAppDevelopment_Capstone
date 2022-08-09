@@ -11,51 +11,32 @@ function main(params) {
     cloudant.setServiceUrl(
       "https://ef1704d4-d45c-43e3-8bde-7d9c1e768096-bluemix.cloudantnosqldb.appdomain.cloud"
     );
-    if (params.dealerId) {
-      dealership = parseInt(params.dealerId);
-      // return reviews with this id
-      cloudant
-        .postFind({
-          db: "reviews",
-          selector: {
-            dealership: parseInt(params.dealerId),
-          },
-        })
-        .then((result) => {
-          let code = 200;
-          if (result.result.docs.length == 0) {
-            code = 404;
-          }
-          resolve({
-            statusCode: code,
-            headers: { "Content-Type": "application/json" },
-            body: result.result.docs,
-          });
-        })
-        .catch((err) => {
-          reject(err);
+    dealership = parseInt(params.dealerId);
+    // return reviews with this dealer id
+    cloudant
+      .postFind({
+        db: "reviews",
+        selector: {
+          dealership: parseInt(params.dealerId),
+        },
+      })
+      .then((result) => {
+        let code = 200;
+        if (result.result.docs.length == 0) {
+          code = 404;
+        }
+        resolve({
+          statusCode: code,
+          headers: { "Content-Type": "application/json" },
+          body: result.result.docs,
         });
-    } else {
-      // return all documents
-      cloudant
-        .postAllDocs({ db: "reviews", includeDocs: true, limit: 10 })
-        .then((result) => {
-          let code = 200;
-          if (result.result.rows.length == 0) {
-            code = 404;
-          }
-          resolve({
-            statusCode: code,
-            headers: { "Content-Type": "application/json" },
-            body: result.result.rows,
-          });
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    }
+      })
+      .catch((err) => {
+        reject(err);
+      });
   });
 }
 
-let result = main({});
+// example invocation
+let result = main({ dealerId: 15 });
 result.then((reviews) => console.log(reviews));
