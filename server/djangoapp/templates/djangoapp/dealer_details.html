@@ -81,7 +81,7 @@
 
     <h3>Reviews for {{ dealer }}</h3>
     <div class="card-columns">
-      {% for review in reviews_list %}
+      {% for review in reviews %}
       <div class="card">
         {% if review.sentiment == 'positive' %}
         <img
