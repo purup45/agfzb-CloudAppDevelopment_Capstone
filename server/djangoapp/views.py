@@ -69,7 +69,7 @@ def add_review(request, dealer_id):
     if request.method == "GET":
         url = "https://e29b86ca.eu-gb.apigw.appdomain.cloud/api/dealership"
         dealer = get_dealer_from_cf_by_id(url, dealer_id)
-        cars = CarModel.objects.filter(dealerId=dealer_id)
+        cars = CarModel.objects.filter(dealer_id=dealer_id)
         context["cars"] = cars
         context["dealer"] = dealer
         return render(request, 'djangoapp/add_review.html', context)
