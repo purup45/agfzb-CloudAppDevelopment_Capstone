@@ -21,8 +21,10 @@ logger = logging.getLogger(__name__)
 def about(request):
     return render(request, 'djangoapp/about.html')
 
+
 def contact(request):
     return render(request, 'djangoapp/contact.html')
+
 
 def login_request(request):
     if request.method == "POST":
@@ -35,32 +37,33 @@ def login_request(request):
         else:
             return redirect('djangoapp:index')
 
+
 def logout_request(request):
     logout(request)
     return redirect('djangoapp:index')
 
+
 def registration_request(request):
     return render(request, 'djangoapp/registration.html')
+
 
 def get_dealerships(request):
     if request.method == "GET":
         context = {}
         url = "https://e29b86ca.eu-gb.apigw.appdomain.cloud/api/dealership"
-        # Get dealers from the URL
         dealerships = get_dealers_from_cf(url)
-        context["dealership_list"]=dealerships
+        context["dealership_list"] = dealerships
         return render(request, 'djangoapp/index.html', context)
 
+
 def get_dealer_details(request, dealer_id):
-    context = {}
-    url = "https://e29b86ca.eu-gb.apigw.appdomain.cloud/api/review"
-    dealer_details = get_dealer_reviews_from_cf(url,dealer_id)
-    context["dealer_id"]=dealer_id
-    context["reviews"]=dealer_details
-    print(context)
-    return render(request, 'djangoapp/dealer_details.html', context)
+    if request.method == "GET":
+        context = {}
+        url = "https://e29b86ca.eu-gb.apigw.appdomain.cloud/api/review/"
+        reviews = get_dealer_reviews_from_cf(url, dealer_id)
+        context["reviews"] = reviews
+        return render(request, 'djangoapp/dealer_details.html', context)
 
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
 # ...
-
