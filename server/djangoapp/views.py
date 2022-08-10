@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, get_dealer_from_cf_by_id, post_request
 from django.contrib.auth import login, logout, authenticate
 import logging
