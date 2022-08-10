@@ -30,10 +30,9 @@ class CarModel(models.Model):
 
     def __str__(self):
         return "Name: " + self.name + "," + \
-               "Make: " + self.make + "," + \
                 "Dealer ID: " + str(self.dealer_id) + "," + \
                "Type: " + self.car_type + "," + \
-               "Year: " + self.year
+               "Year: " + str(self.year.year)
 
 
 class CarDealer:

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.shortcuts import render, redirect
-from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, get_dealer_from_cf_by_id
+from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, get_dealer_from_cf_by_id, post_request
 from django.contrib.auth import login, logout, authenticate
 import logging
 from datetime import datetime
@@ -75,21 +75,15 @@ def add_review(request, dealer_id):
         return render(request, 'djangoapp/add_review.html', context)
 
     if request.method == "POST":
-        url = "https://83647813.us-south.apigw.appdomain.cloud/dealershipapi/review/?dealerId=" + \
-            str(dealer_id)
-        cars = CarModel.objects.filter(dealerId=dealer_id)
-        for car in cars:
-            if car.id == int(request.POST['car']):
-                review_car = car
-
-        print(review_car.year.strftime("%Y"))
-        #url = body['url']
-
+        url = "https://e29b86ca.eu-gb.apigw.appdomain.cloud/api/review/"      
         if 'purchasecheck' in request.POST:
             was_purchased = True
         else:
             was_purchased = False
-        print(was_purchased)
+        cars = CarModel.objects.filter(dealer_id=dealer_id)
+        for car in cars:
+            if car.id == int(request.POST['car']):
+                review_car = car  
         review = {}
         review["time"] = datetime.utcnow().isoformat()
         review["name"] = request.POST['name']
@@ -98,7 +92,7 @@ def add_review(request, dealer_id):
         review["id"] = dealer_id
         review["purchase"] = was_purchased
         review["purchase_date"] = request.POST['purchasedate']
-        review["car_make"] = review_car.car.name
+        review["car_make"] = review_car.make.name
         review["car_model"] = review_car.name
         review["car_year"] = review_car.year.strftime("%Y")
         json_payload = {}
