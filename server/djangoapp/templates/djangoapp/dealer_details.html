@@ -116,6 +116,7 @@
                 <h5 class="card-title">{{review.car_year}}</h5>
                 {% else %} 
                 <h5 class="card-title">Reviewer did not buy any car.</h5>
+                <h5 class="card-title" style="color: #f8f9fa;">.</h5>
                 {% endif %}
                 </h5>
                 <label class="card-title">{{review.review}} </label>
@@ -123,16 +124,23 @@
             </div>
           {% endfor %}
           {% else %}
+          <div class="card-columns">
             <div class="card">
-              <div class="card-body">
+              <div class="card-body bg-light">
                 <h5 class="card-title">No reviews yet</h5>
+                <a class="btn btn-link" method= "GET" href="{% url 'djangoapp:add_review' dealer.id %}">Be first to add a review?</a>
               </div>
             </div>
-            <div style="min-height: 675px"></div>
+          </div>
           {% endif %}
           </div>
         </div>
       </div>
+      {% if reviews %}
+      <div style="min-height: 560px"></div>
+      {% else %}
+      <div style="min-height: 625px"></div>
+      {% endif %}
     </div>
     <footer class="bg-light text-center text-lg-start mt-5">
       <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
