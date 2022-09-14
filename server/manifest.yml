@@ -1,11 +1,12 @@
   applications:
-  - name: djangoapp
+  - name: preb4
     routes:
-      - route: $HOST.$DOMAIN
+      - route: preb4.au-syd.mybluemix.net
     memory: 128M
     buildpack: python_buildpack
-  - name: djangoapp-nginx
+  - name: preb4-nginx
     routes:
-      - route: $HOST.$DOMAIN/static
+    
+      - route: preb4.au-syd.mybluemix.net/static
     memory: 128M
     buildpack: staticfile_buildpack
