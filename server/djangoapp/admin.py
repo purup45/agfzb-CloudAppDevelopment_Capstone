@@ -6,7 +6,7 @@ from .models import CarMake, CarModel
 
 class CarModelInline(admin.StackedInline):
     model = CarModel
-    extra = 6
+    extra = 0
 
 class CarModelAdmin(admin.ModelAdmin):
     list_display = ['name',  'dealer_id', 'car_type', 'year']
