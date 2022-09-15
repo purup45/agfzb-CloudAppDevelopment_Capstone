@@ -24,4 +24,4 @@ class CarMakeAdmin(admin.ModelAdmin):
 
 # Register models here
 admin.site.register(CarModel,CarModelAdmin)
-admin.site.register(CarMake)
+admin.site.register(CarMake,CarMakeAdmin)
