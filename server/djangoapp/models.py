@@ -30,7 +30,7 @@ class CarModel(models.Model):
     Type_Choices=(('Sedan','Sedan'),
     ('SUV','SUV'),
     ('Wagon','Wagon'))
-    car_make=models.ManyToManyField(CarMake)
+    car_make=models.ForeignKey('CarMake',on_delete=models.CASCADE)
     name=models.CharField(max_length=50)
     dealer_id=models.IntegerField()
     type=models.CharField(max_length=15,choices=Type_Choices,default='Sedan')
