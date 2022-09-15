@@ -1,4 +1,4 @@
 requests
 Django
 gunicorn==20.0.4
-Pillow
+Pillow==9.0.2
