@@ -4,6 +4,10 @@ from .models import *
 from requests.auth import HTTPBasicAuth
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from ibm_watson import NaturalLanguageUnderstandingV1
+from ibm_watson.natural_language_understanding_v1 import Features,SentimentOptions
+import time
 
 
 # Create a `get_request` to make HTTP GET requests
@@ -96,9 +100,10 @@ def get_dealer_from_cf_by_id(url, dealer_id):
 
 def get_dealer_reviews_from_cf(url, dealer_id):
     results = []
-    json_result = get_request(url, dealerId=dealer_id)
+    json_result = get_request(url, id=dealer_id)
+    print(json_result,"dealer_id")
     if json_result:
-        reviews = json_result["body"]
+        reviews = json_result
         for review in reviews:
             if review["purchase"]:
                 review_obj = DealerReview(
@@ -131,8 +136,8 @@ def get_dealer_reviews_from_cf(url, dealer_id):
 
 
 def analyze_review_sentiments(dealer_review):
-    API_KEY = "56Uu0KyzSNEZ8u71Q9Nu4eqYmSiLxsMV0otoCXFUCIam"
-    NLU_URL = 'https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/351966a8-a214-4fc1-a319-ea7f066c002c'
+    API_KEY = "ASpAllqPyaDFSNxSG2Khl3t0rX9rB0W1IXyiDzcyGjL3"
+    NLU_URL = 'https://api.au-syd.natural-language-understanding.watson.cloud.ibm.com/instances/b022da2f-9737-4658-b8dd-4e94d705dad4'
     authenticator = IAMAuthenticator(API_KEY)
     natural_language_understanding = NaturalLanguageUnderstandingV1(
         version='2021-08-01', authenticator=authenticator)

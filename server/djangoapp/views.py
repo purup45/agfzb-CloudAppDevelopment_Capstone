@@ -36,7 +36,7 @@ def login_request(request):
         if user is not None:
             login(request, user)
             
-            return render(request,'djangoapp/dealer_details.html')
+            return render(request,'djangoapp/index.html')
         
         return render(request,'djangoapp/index.html', {'error':'wrong pwd or username'})
 
@@ -86,11 +86,15 @@ def get_dealer_details(request, dealer_id):
         context = {}
         url = "https://eu-de.functions.appdomain.cloud/api/v1/web/mishrajgc_myspace1/dealership-package/review"
         reviews = get_dealer_reviews_from_cf(url, dealer_id)
+        
+        print(reviews)
         context["reviews"] = reviews
         dealer = get_dealer_from_cf_by_id(
             "https://eu-de.functions.appdomain.cloud/api/v1/web/mishrajgc_myspace1/dealership-package/get-dealership", dealer_id)
+        print(dealer)
         context["dealer"] = dealer
-        print(context)
+        
+            
         return render(request, 'djangoapp/dealer_details.html', context)
 
 
