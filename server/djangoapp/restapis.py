@@ -10,15 +10,26 @@ from django.shortcuts import get_object_or_404
 def get_request(url, **kwargs):
     print(kwargs)
     print("GET from {} ".format(url))
+    
     try:
-        response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
+        if 'api' in kwargs:
+            response = requests.get(url, params=kwargs, headers={'Content-Type': 'application/json'},
                                      auth=HTTPBasicAuth('apikey', api_key))
-       
-    except:
-        #status_code=Http404("Request does not exist")
+            print(response,'api')
+        elif kwargs:
+            response = requests.get(
+                url, headers={'Content-Type': 'application/json'}, params=kwargs)
+            print(params,"second")
+        else:
+            response = requests.get(
+                url, headers={'Content-Type': 'application/json'})
+            print('third')
+
+    except Exception as e:
+        
         print("Network exception occurred")
         
-    #status_code=response.status_code.get_object_
+    status_code=response.status_code
     print("With status {} ".format(status_code))
     json_data = json.loads(response.text)
     return json_data
@@ -35,25 +46,33 @@ def get_request(url, **kwargs):
 def get_dealers_from_cf(url, **kwargs):
     results = []
     # Call get_request with a URL parameter
-    json_result = get_request(url)
+    json_result = get_request(url,**kwargs)
+    #print(json_result,"first")
     if json_result:
         # Get the row list in JSON as dealers
-        dealers = json_result["rows"]
+        #dealers = json_result["row"]
+
+        #print(dealers,"second")
         # For each dealer object
-        for dealer in dealers:
+        #for dealer in dealers:
+        for dealer in json_result:    
             # Get its content in `doc` object
-            dealer_doc = dealer["doc"]
+            #dealer_doc = dealer["body"]
+            #dealer_doc =json_result
+            dealer_doc =dealer
+            #print(dealer,"dealr")
             # Create a CarDealer object with values in `doc` object
             dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
                                    id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
                                    short_name=dealer_doc["short_name"],
                                    st=dealer_doc["st"], zip=dealer_doc["zip"])
+            
             results.append(dealer_obj)
 
     return results
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
-# def get_dealer_by_id_from_cf(url, dealerId):
+#def get_dealer_by_id_from_cf(url, dealerId):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
 
