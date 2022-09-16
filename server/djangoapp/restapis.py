@@ -81,6 +81,66 @@ def get_dealers_from_cf(url, **kwargs):
 # def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
 # - Get the returned sentiment label such as Positive or Negative
+def get_dealer_from_cf_by_id(url, dealer_id):
+    json_result = get_request(url, id=dealer_id)
+    if json_result:
+        print(json_result,'dealer_get')
+        dealer = json_result[0]
+        
+        dealer_obj = CarDealer(address=dealer["address"], city=dealer["city"], full_name=dealer["full_name"],
+                               id=dealer["id"], lat=dealer["lat"], long=dealer["long"],
+                               short_name=dealer["short_name"],
+                               st=dealer["st"], zip=dealer["zip"])
+    return dealer_obj
 
+
+def get_dealer_reviews_from_cf(url, dealer_id):
+    results = []
+    json_result = get_request(url, dealerId=dealer_id)
+    if json_result:
+        reviews = json_result["body"]
+        for review in reviews:
+            if review["purchase"]:
+                review_obj = DealerReview(
+                    dealership=review["dealership"],
+                    name=review["name"],
+                    purchase=review["purchase"],
+                    review=review["review"],
+                    purchase_date=review["purchase_date"],
+                    car_make=review["car_make"],
+                    car_model=review["car_model"],
+                    car_year=review["car_year"],
+                    sentiment=analyze_review_sentiments(review["review"]),
+                    id=review['id']
+                )
+            else:
+                review_obj = DealerReview(
+                    dealership=review["dealership"],
+                    name=review["name"],
+                    purchase=review["purchase"],
+                    review=review["review"],
+                    purchase_date=None,
+                    car_make=None,
+                    car_model=None,
+                    car_year=None,
+                    sentiment=analyze_review_sentiments(review["review"]),
+                    id=review['id']
+                )
+            results.append(review_obj)
+    return results
+
+
+def analyze_review_sentiments(dealer_review):
+    API_KEY = "56Uu0KyzSNEZ8u71Q9Nu4eqYmSiLxsMV0otoCXFUCIam"
+    NLU_URL = 'https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/351966a8-a214-4fc1-a319-ea7f066c002c'
+    authenticator = IAMAuthenticator(API_KEY)
+    natural_language_understanding = NaturalLanguageUnderstandingV1(
+        version='2021-08-01', authenticator=authenticator)
+    natural_language_understanding.set_service_url(NLU_URL)
+    response = natural_language_understanding.analyze(text=dealer_review, features=Features(
+        sentiment=SentimentOptions(targets=[dealer_review]))).get_result()
+    label = json.dumps(response, indent=2)
+    label = response['sentiment']['document']['label']
+    return(label)
 
 
