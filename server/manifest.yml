@@ -1,11 +1,11 @@
   applications:
-  - name: berose7
+  - name: djangoapp
     routes:
-      - route: berose7.us-south.cf.appdomain.cloud
+      - route: bestcars-a7coder.au-syd.cf.appdomain.cloud
     memory: 128M
     buildpack: python_buildpack
-  - name: berose7-nginx
+  - name: djangoapp-nginx
     routes:
-      - route: berose7.us-south.cf.appdomain.cloud/static
+      - route: bestcars-a7coder.au-syd.cf.appdomain.cloud
     memory: 128M
     buildpack: staticfile_buildpack
