@@ -1,0 +1,11 @@
+  applications:
+  - name: berose7
+    routes:
+      - route: berose7.us-south.cf.appdomain.cloud
+    memory: 128M
+    buildpack: python_buildpack
+  - name: berose7-nginx
+    routes:
+      - route: berose7.us-south.cf.appdomain.cloud/static
+    memory: 128M
+    buildpack: staticfile_buildpack
