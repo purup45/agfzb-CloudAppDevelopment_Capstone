@@ -86,7 +86,7 @@ def registration_request(request):
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
     if request.method == "GET":
-        url = "https://9b3384ad.us-south.apigw.appdomain.cloud/api/dealership"
+        url = "https://us-south.functions.appdomain.cloud/api/v1/web/3aa2423c-9962-4c3e-abc3-c8a4c36dbf14/dealership-package/get-dealership"
         dealerships = get_dealers_from_cf(url)
         context = {}
         context["dealerships"] = dealerships
@@ -95,11 +95,11 @@ def get_dealerships(request):
 def get_dealer_details(request, id):
     if request.method == "GET":
         context = {}
-        url = "https://9b3384ad.us-south.apigw.appdomain.cloud/api/dealership"
+        url = "https://us-south.functions.appdomain.cloud/api/v1/web/3aa2423c-9962-4c3e-abc3-c8a4c36dbf14/dealership-package/get-dealership"
         dealer = get_dealer_by_id_from_cf(url, id)
         context["dealer"] = dealer
     
-        review_url = "https://9b3384ad.us-south.apigw.appdomain.cloud/api/review"
+        review_url = "https://us-south.functions.appdomain.cloud/api/v1/web/3aa2423c-9962-4c3e-abc3-c8a4c36dbf14/dealership-package/get-review"
         reviews = get_dealer_reviews_from_cf(review_url, id=id)
         print(reviews)
         context["reviews"] = reviews
@@ -109,7 +109,7 @@ def get_dealer_details(request, id):
 
 def add_review(request, id):
     context = {}
-    dealer_url = "https://9b3384ad.us-south.apigw.appdomain.cloud/api/dealership"
+    dealer_url = "https://us-south.functions.appdomain.cloud/api/v1/web/3aa2423c-9962-4c3e-abc3-c8a4c36dbf14/dealership-package/get-dealership"
     dealer = get_dealer_by_id_from_cf(dealer_url, id=id)
     context["dealer"] = dealer
     if request.method == 'GET':
@@ -142,6 +142,6 @@ def add_review(request, id):
 
             new_payload = {}
             new_payload["review"] = payload
-            review_post_url = "https://9b3384ad.us-south.apigw.appdomain.cloud/api/review"
+            review_post_url = "https://us-south.functions.cloud.ibm.com/api/v1/namespaces/3aa2423c-9962-4c3e-abc3-c8a4c36dbf14/actions/dealership-package/post-review"
             post_request(review_post_url, new_payload, id=id)
         return redirect("djangoapp:dealer_details", id=id)
