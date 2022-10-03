@@ -71,14 +71,16 @@ def registration_request(request):
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
     if request.method == "GET":
+        context = {}
         url = "https://eu-de.functions.appdomain.cloud/api/v1/web/mishrajgc_myspace1/dealership-package/get-dealership"
         # Get dealers from the URL
         dealerships = get_dealers_from_cf(url)
         # Concat all dealer's short name
-        dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
+        #dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
-        return HttpResponse(dealer_names)
-
+        context["dealership_list"] = dealerships
+        #return HttpResponse(dealer_names)
+        return render(request, 'djangoapp/index.html', context)
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
 def get_dealer_details(request, dealer_id):
@@ -125,7 +127,7 @@ def add_review(request, dealer_id):
         review["review"] = request.POST['content']
         review["purchase"] = was_purchased
         review["purchase_date"] = request.POST['purchasedate']
-        review["car_make"] = review_car.make.name
+        review["car_make"] = review_car.car_make.name
         review["car_model"] = review_car.name
         review["car_year"] = review_car.year.strftime("%Y")
         json_payload = {}
