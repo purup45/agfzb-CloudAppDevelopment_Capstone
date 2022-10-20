@@ -42,14 +42,15 @@ def get_request(url, **kwargs):
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
 def post_request(url, json_payload, **kwargs):
-    print(json_payload)
+    print(json_payload,"json_payload")
     print("POST from {} ".format(url))
     try:
         response = requests.post(url, params=kwargs, json=json_payload)
+        print(response,"response")
         status_code = response.status_code
         print("With status {} ".format(status_code))
         json_data = json.loads(response.text)
-        print(json_data)
+        print(json_data,"json_data")
         return json_data
     except:
         print("Network exception occurred")
@@ -118,7 +119,7 @@ def get_dealer_reviews_from_cf(url, dealer_id):
         for review in reviews:
             if review["purchase"]:
                 review_obj = DealerReview(
-                    dealership=review["dealership"],
+                    dealership=review["id"],
                     name=review["name"],
                     purchase=review["purchase"],
                     review=review["review"],
@@ -131,7 +132,7 @@ def get_dealer_reviews_from_cf(url, dealer_id):
                 )
             else:
                 review_obj = DealerReview(
-                    dealership=review["dealership"],
+                    dealership=review["id"],
                     name=review["name"],
                     purchase=review["purchase"],
                     review=review["review"],

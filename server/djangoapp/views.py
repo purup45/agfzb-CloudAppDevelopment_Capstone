@@ -116,8 +116,11 @@ def add_review(request, dealer_id):
             was_purchased = True
         else:
             was_purchased = False
+
         cars = CarModel.objects.filter(dealer_id=dealer_id)
+        print(cars,"CARS")
         for car in cars:
+            print(car,"car")
             if car.id == int(request.POST['car']):
                 review_car = car  
         review = {}
@@ -132,5 +135,5 @@ def add_review(request, dealer_id):
         review["car_year"] = review_car.year.strftime("%Y")
         json_payload = {}
         json_payload["review"] = review
-        response = post_request(url, json_payload)
+        response = post_request(url, json_payload,dealer_id=dealer_id)
         return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
