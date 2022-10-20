@@ -36,7 +36,7 @@ def login_request(request):
         if user is not None:
             login(request, user)
             
-            return render(request,'djangoapp/index.html')
+            return render(request,'djangoapp/index.html',{'msg':'successfully log in'})
         
         return render(request,'djangoapp/index.html', {'error':'wrong pwd or username'})
 
@@ -78,7 +78,7 @@ def get_dealerships(request):
         # Concat all dealer's short name
         #dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
-        context["dealership_list"] = dealerships
+        context["dealerships"] = dealerships
         #return HttpResponse(dealer_names)
         return render(request, 'djangoapp/index.html', context)
 

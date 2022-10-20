@@ -19,9 +19,9 @@
     
     <body>
     <!-- Remove this line the first time you edit this file -->
-     This is the index page of your Django app!
+     
     <!--Add a nav bar here -->
-    {% block first %}
+    
     <nav style='display:flex; justify-content:space-between; background:lightgrey; align-items:center' > Dealership Review
         <a href='{% url "djangoapp:contact" %}'>Contact Us</a>
         <a href='{% url "djangoapp:about" %}'>About Us</a>
@@ -40,9 +40,9 @@
         {% endif %}
         
     </nav>
-    {% endblock first %}
+    
     {% block content %}
-    {% endblock content %}
+    
 
     <!--Add a dealer table here -->
     <main role="main" class="container pt-3">
@@ -60,7 +60,16 @@
                 </tr>
             </thead>
             <tbody>
-                {% for dealer in dealership_list %}
+                <div>
+                {% if error %}
+                   {{error}}
+                {% endif %}
+                {% if msg %}
+                  {{msg}}
+                {% endif %}
+                </div>
+                {% for dealer in dealerships %}
+                
                     <tr>
                         <td>{{dealer.id}}</td>
                         <td><a href="{% url 'djangoapp:dealer_details' dealer.id %}">{{dealer.full_name}}</a></td>
@@ -73,6 +82,7 @@
             </tbody>
         </table>
     </main>
+    {% endblock content %}
     <footer style='height:50px; bottom:0; position:fixed; width:100%; padding:10px 0px 20px 10px; background:lightgrey'>
         <a href='{% url "djangoapp:contact" %}'>Contact Us</a>
         <a href='{% url "djangoapp:about" %}'>About Us</a>
