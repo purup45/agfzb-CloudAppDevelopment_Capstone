@@ -36,7 +36,7 @@ def login_request(request):
         if user is not None:
             login(request, user)
             
-            return render(request,'djangoapp/index.html',{'msg':'successfully log in'})
+            return redirect('djangoapp:index')
         
         return render(request,'djangoapp/index.html', {'error':'wrong pwd or username'})
 
