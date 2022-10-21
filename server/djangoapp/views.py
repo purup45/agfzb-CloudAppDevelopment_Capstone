@@ -111,7 +111,7 @@ def add_review(request, dealer_id):
         return render(request, 'djangoapp/add_review.html', context)
 
     if request.method == "POST":
-        url = "https://eu-de.functions.appdomain.cloud/api/v1/web/mishrajgc_myspace1/dealership-package/review/"      
+        url = "https://eu-de.functions.appdomain.cloud/api/v1/web/mishrajgc_myspace1/dealership-package/post_review/"      
         if 'purchasecheck' in request.POST:
             was_purchased = True
         else:
