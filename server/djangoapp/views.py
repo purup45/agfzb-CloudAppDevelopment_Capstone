@@ -87,7 +87,7 @@ def get_dealer_details(request, dealer_id):
     if request.method == "GET":
         context = {}
         url = "https://eu-de.functions.appdomain.cloud/api/v1/web/mishrajgc_myspace1/dealership-package/review"
-        reviews = get_dealer_reviews_from_cf(url, dealer_id)
+        reviews = get_dealer_reviews_from_cf(url,dealer_id)
         
         print(reviews)
         context["reviews"] = reviews
