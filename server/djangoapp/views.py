@@ -62,7 +62,7 @@ def registration_request(request):
             except User.DoesNotExist:
                 user=User.objects.create_user(username=request.POST['username'],password=request.POST['password'])
                 login(request,user)
-                return redirect('djangoapp:dealer_details')
+                return redirect('djangoapp:index')
         else:
             return render(request,'djangoapp/registration.html',{'error':'Password doesnt match'})
     return render(request, 'djangoapp/registration.html')
