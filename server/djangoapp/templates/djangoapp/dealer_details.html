@@ -20,7 +20,9 @@
           <div class="col-md">
             {% if reviews %}
             <div class="card-columns">
-              {% for review in reviews %}
+            {% for review in reviews %}
+              {% if review.id == dealer.id %}
+                 
               <div class="card">
                 {% if review.sentiment == 'positive' %}
                 <img
@@ -57,6 +59,7 @@
                   <label class="card-title">{{review.review}} </label>
                 </div>
               </div>
+              {% endif %}
             {% endfor %}
             {% else %}
             <div class="card-columns">
