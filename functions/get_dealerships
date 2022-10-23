@@ -55,6 +55,7 @@ function main(params) {
             .then((result)=>{
               // console.log(result.result.rows);
               let code = 200;
+              ######special code ##################
               const sorted_result= result.result.rows.map((row) => { return { 
 
                   id: row.doc.id, 
@@ -78,6 +79,7 @@ function main(params) {
                   short_name: row.doc.short_name
                   
                   }})
+              ########endSpecial code ##########
               if (result.result.rows.length == 0) {
                   code = 404;
               }
@@ -92,3 +94,5 @@ function main(params) {
       }
     }
     )}
+    
+   
