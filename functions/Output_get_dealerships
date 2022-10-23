@@ -1,0 +1,63 @@
+##### without special code #########
+{
+  "body": [
+    {
+      "doc": {
+        "_id": "2338e8a6c78f386ad4525e3fd155b353",
+        "_rev": "1-34e7ebd07643af43db578a46ee1d6365",
+        "address": "3 Nova Court",
+        "city": "El Paso",
+        "full_name": "Holdlamis Car Dealership",
+        "id": 1,
+        "lat": 31.6948,
+        "long": -106.3,
+        "short_name": "Holdlamis",
+        "st": "TX",
+        "state": "Texas",
+        "zip": "88563"
+      },
+      "id": "2338e8a6c78f386ad4525e3fd155b353",
+      "key": "2338e8a6c78f386ad4525e3fd155b353",
+      "value": {
+        "rev": "1-34e7ebd07643af43db578a46ee1d6365"
+      }
+    },
+    {
+      "doc": {
+        "_id": "2338e8a6c78f386ad4525e3fd155b705",
+        "_rev": "1-d1778a396ca8cb0ef2966a9854eb93ee",
+        "address": "6337 Butternut Crossing",
+        "city": "Minneapolis",
+        "full_name": "Temp Car Dealership",
+        "id": 2,
+        "lat": 44.9762,
+        "long": -93.2759,
+        "short_name": "Temp",  ..........
+ ####### With special Code #######
+ {
+  "body": [
+    {
+      "address": "3 Nova Court",
+      "city": "El Paso",
+      "full_name": "Holdlamis Car Dealership",
+      "id": 1,
+      "lat": 31.6948,
+      "long": -106.3,
+      "short_name": "Holdlamis",
+      "st": "TX",
+      "state": "Texas",
+      "zip": "88563"
+    },
+    {
+      "address": "6337 Butternut Crossing",
+      "city": "Minneapolis",
+      "full_name": "Temp Car Dealership",
+      "id": 2,
+      "lat": 44.9762,
+      "long": -93.2759,
+      "short_name": "Temp",
+      "st": "MN",
+      "state": "Minnesota",
+      "zip": "55402"
+    },
+    {...........
