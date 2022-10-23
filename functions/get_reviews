@@ -1,0 +1,102 @@
+####Python get_review
+import sys 
+from ibmcloudant.cloudant_v1 import CloudantV1
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+
+def main(dict): 
+    authenticator = IAMAuthenticator("w3JLN-xcIwp1na8L_LhGbP9zcucQnw_xCsjny-alZDx8")
+    service = CloudantV1(authenticator=authenticator)
+    service.set_service_url("https://991a67c6-1de1-4f7b-8d62-854751829d03-bluemix.cloudantnosqldb.appdomain.cloud")
+    response = service.post_find(
+                db='reviews',
+                selector={'dealership': {'$eq': int(dict['id'])}},
+            ).get_result()
+    try: 
+        # result_by_filter=my_database.get_query_result(selector,raw_result=True) 
+        result= {
+            'headers': {'Content-Type':'application/json'}, 
+            'body': {'data':response} 
+            }        
+        return result
+    except:  
+        return { 
+            'statusCode': 404, 
+            'message': 'Something went wrong'
+            }
+
+####NodeJS get_review
+function main(params) {
+    // console.log(params);
+    return new Promise(function (resolve, reject) {
+        const { CloudantV1 } = require('@ibm-cloud/cloudant');
+        const { IamAuthenticator } = require('ibm-cloud-sdk-core');
+        const authenticator = new IamAuthenticator({ apikey: 'V6uoGdAZE3HL8yWSsgrgq4tLOyswaA6hjcz_MFVU4Lib' })
+        const cloudant = CloudantV1.newInstance({
+            authenticator: authenticator
+        });
+        cloudant.setServiceUrl('https://ea043824-a552-4060-99ee-c3cbfc08e922-bluemix.cloudantnosqldb.appdomain.cloud');
+        if (params.dealerId) {
+            id = parseInt(params.dealerId)
+            // return dealership with this state 
+            cloudant.postFind({
+              db: 'reviews',
+              selector: {
+                dealership :id
+              }
+            })
+            .then((result)=>{
+              // console.log(result.result.docs);
+              let code = 200;
+              if (result.result.docs.length == 0) {
+                  code = 404;
+              }
+              resolve({
+                  statusCode: code,
+                  headers: { 'Content-Type': 'application/json' },
+                  body: result.result.docs
+              });
+            }).catch((err)=>{
+              reject(err);
+            })
+        } else {
+            // return all documents 
+            cloudant.postAllDocs({ db: 'reviews', includeDocs: true, limit: 10 })            
+            .then((result)=>{
+              // console.log(result.result.rows);
+              let code = 200; const sorted_review= result.result.rows.map((row) => { return { 
+
+      id: row.doc.id, 
+
+      name: row.doc.name, 
+
+      dealership:row.doc.dealerId, 
+
+      review:row.doc.review, 
+
+      purchase:row.doc.purchase, 
+
+      another:row.doc.another, 
+
+      purchase_date:row.doc.purchase_date, 
+
+      car_make:row.doc.car_make,
+      car_model:row.doc.car_model,
+      car_year:row.doc.car_year
+    
+                  }})
+              
+              
+              if (result.result.rows.length == 0) {
+                  code = 404;
+              }
+              resolve({
+                  statusCode: code,
+                  headers: { 'Content-Type': 'application/json' },
+                  body: sorted_review
+              });
+            }).catch((err)=>{
+              reject(err);
+            })
+      }
+    }
+    )}
